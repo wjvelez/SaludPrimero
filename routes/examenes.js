@@ -92,17 +92,6 @@ router.patch('/examen/:id', function(req, res){
 });
 
 router.patch('/examen/:id', function(req, res){
-	Examen.findById(req.params.id, function(err, examen){
-		examen.paciente = req.body.paciente;
-		examen.save(function(err){
-			if(err){
-				res.send(err);
-			}
-			res.json(examen);
-		});
-	});
-
-	console.log(req.query.flag);
 	if (req.query.flag=="resultados") {
 		Examen.findById(req.params.id, function(err, examen){
 			examen.unidades = req.body.unidades;
@@ -128,6 +117,4 @@ router.patch('/examen/:id', function(req, res){
 	} else {
 		res.send({error: "ingrese bien la URL"});
 	}
-
-
 });
