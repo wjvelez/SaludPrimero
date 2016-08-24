@@ -24,6 +24,8 @@ router.get('/paciente/:id/examenes', function(req, res, next){
 });
 
 
+
+
 router.post('/paciente', function(req, res, next){
 	var paciente = new Paciente(req.body);
 

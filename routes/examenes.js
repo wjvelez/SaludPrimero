@@ -79,3 +79,15 @@ router.patch('/examen/:id', function(req, res){
 		});
 	});
 });
+
+router.patch('/examen/:id', function(req, res){
+	Examen.findById(req.params.id, function(err, examen){
+		examen.paciente = req.body.paciente;
+		examen.save(function(err){
+			if(err){
+				res.send(err);
+			}
+			res.json(examen);
+		});
+	});
+});
