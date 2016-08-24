@@ -24,6 +24,15 @@ router.get('/muestra/:id/examenes', function(req, res, next){
 	});
 });
 
+router.get('/paciente/:id/examenes', function(req, res, next){
+	Examen.find({paciente:req.params.id}, function(err, examenes){
+		if (err) {
+			return next(err);
+		}
+		res.json(examenes);
+	});
+});
+
 
 router.post('/examen', function(req, res, next){
 	var examen = new Examen(req.body);
@@ -66,7 +75,9 @@ router.delete('/examen/:id', function(req, res){
 	});
 });
 
+
 router.patch('/examen/:id', function(req, res){
+<<<<<<< HEAD
 	Examen.findById(req.params.id, function(err, examen){
 		examen.unidades = req.body.unidades;
 		examen.resultado = req.body.resultado;
@@ -90,4 +101,36 @@ router.patch('/examen/:id', function(req, res){
 			res.json(examen);
 		});
 	});
+=======
+	console.log(req.query.flag);
+	if (req.query.flag=="resultados") {
+		Examen.findById(req.params.id, function(err, examen){
+			examen.unidades = req.body.unidades;
+			examen.resultado = req.body.resultado;
+			examen.valores_referencia = req.body.valores_referencia;
+			examen.save(function(err){
+				if(err){
+					res.send(err);
+				}
+				res.json(examen);
+			});
+		});	
+	} else if (req.query.flag=="paciente") {
+		Examen.findById(req.params.id, function(err, examen){
+			examen.paciente = req.body.paciente;
+			examen.save(function(err){
+				if(err){
+					res.send(err);
+				}
+				res.json(examen);
+			});
+		});	
+	} else {
+		res.send({error: "ingrese bien la URL"});
+	}
+
+
+
+	
+>>>>>>> 96007254596dcbdcf8dcbc7bd9d786c59bfd15b3
 });

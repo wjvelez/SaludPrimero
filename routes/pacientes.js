@@ -14,28 +14,37 @@ router.get('/pacientes', function(req, res, next){
 	});
 });
 
-router.get('/paciente/:id/examenes', function(req, res, next){
-	Examen.find({paciente:req.params.id}, function(err, examenes){
-		if (err) {
-			return next(err);
-		}
-		res.json(examenes);
-	});
+router.post('/paciente', function(req, res, next){	
+	if (req.query.flag=="nuevo") {
+		var paciente = new Paciente(req.body);
+		paciente.save(function(err, paciente){
+			if (err) {
+				return next(err);
+			}
+			res.json(paciente);
+		});
+	} else if (req.query.flag=="login") {
+		Paciente.find({correo:req.body.correo, clave:req.body.clave }, function(err, paciente){
+			if(err){
+				res.send(err);
+			}
+			res.json(paciente);
+		});	
+	} else {
+		res.send({error: "ingrese bien la URL"});
+	}
 });
 
 
+<<<<<<< HEAD
 
 
 router.post('/paciente', function(req, res, next){
 	var paciente = new Paciente(req.body);
+=======
+>>>>>>> 96007254596dcbdcf8dcbc7bd9d786c59bfd15b3
 
-	paciente.save(function(err, paciente){
-		if (err) {
-			return next(err);
-		}
-		res.json(paciente);
-	});
-});
+
 
 router.put('/paciente/:id', function(req, res){
 	Paciente.findById(req.params.id, function(err, paciente){
