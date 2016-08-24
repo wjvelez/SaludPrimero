@@ -6,7 +6,23 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var mongoose = require('mongoose');
 
-mongoose.connect('mongodb://admin:admin@ds161505.mlab.com:61505/proyectodaw', function(err){
+/*
+mongoose.connection.db.listCollections().toArray(function(err, names) {
+    if (err) {
+        console.log(err);
+    }
+    else {
+        names.forEach(function(e,i,a) {
+            mongoose.connection.db.dropCollection(e.name);
+            console.log("--->>", e.name);
+        });
+    }
+});
+*/
+
+
+
+mongoose.connect('mongodb://admin:admin@ds161505.mlab.com:61505/proyectodaw', function(err, next){
   if (err) {
     return next(err);
     console.log("conexion error");

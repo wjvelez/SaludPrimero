@@ -36,16 +36,6 @@ router.post('/paciente', function(req, res, next){
 });
 
 
-<<<<<<< HEAD
-
-
-router.post('/paciente', function(req, res, next){
-	var paciente = new Paciente(req.body);
-=======
->>>>>>> 96007254596dcbdcf8dcbc7bd9d786c59bfd15b3
-
-
-
 router.put('/paciente/:id', function(req, res){
 	Paciente.findById(req.params.id, function(err, paciente){
 		paciente.nombre = req.body.nombre;
