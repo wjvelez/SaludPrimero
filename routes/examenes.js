@@ -77,7 +77,6 @@ router.delete('/examen/:id', function(req, res){
 
 
 router.patch('/examen/:id', function(req, res){
-<<<<<<< HEAD
 	Examen.findById(req.params.id, function(err, examen){
 		examen.unidades = req.body.unidades;
 		examen.resultado = req.body.resultado;
@@ -101,7 +100,7 @@ router.patch('/examen/:id', function(req, res){
 			res.json(examen);
 		});
 	});
-=======
+
 	console.log(req.query.flag);
 	if (req.query.flag=="resultados") {
 		Examen.findById(req.params.id, function(err, examen){
@@ -131,6 +130,4 @@ router.patch('/examen/:id', function(req, res){
 
 
 
-	
->>>>>>> 96007254596dcbdcf8dcbc7bd9d786c59bfd15b3
 });
