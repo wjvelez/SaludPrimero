@@ -22,7 +22,7 @@ mongoose.connection.db.listCollections().toArray(function(err, names) {
 
 
 
-mongoose.connect('mongodb://admin:admin@ds161505.mlab.com:61505/proyectodaw', function(err, next){
+mongoose.connect('mongodb://admin:admin@ds161505.mlab.com:61505/proyectodaw', function(err){
   if (err) {
     return next(err);
     console.log("conexion error");
@@ -50,6 +50,7 @@ var muestrasRoutes = require('./routes/muestras');
 var centrosMedRoutes = require('./routes/centrosMed');
 var operariosRoutes = require('./routes/operarios');
 var laboratoristasRoutes = require('./routes/laboratoristas');
+var login = require('./routes/login');
 
 var app = express();
 
@@ -77,6 +78,7 @@ app.use('/', muestrasRoutes);
 app.use('/', centrosMedRoutes);
 app.use('/', operariosRoutes);
 app.use('/', laboratoristasRoutes);
+app.use('/', login);
 app.use('/users', users);
 
 
