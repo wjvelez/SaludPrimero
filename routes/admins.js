@@ -1,36 +1,36 @@
 var express = require('express');
 var router = express.Router();
-var Operario = require('../models/Operario.js');
 var Admin = require('../models/Admin.js');
 var mongoose = require('mongoose');
 var bcrypt = require('bcryptjs');
 module.exports = router;
 
 
-router.get('/operarios', function(req, res, next){
-	Admin.findOne({ _id: req.session.user._id }, function (err, user) { //Solo Admins logoneados pueden usar este metodo
+router.get('/admins', function(req, res, next){
+    Admin.findOne({ _id: req.session.user._id }, function (err, user) { //Solo Admins logoneados pueden usar este metodo
 		if (!user) {
+			//req.session.reset();
 			return res.send({error: "usuario no autorizado"});
 		} else {
-			Operario.find(function(err, operarios){
-				if(err){ 
+			Admin.find(function(err, admins){
+				if(err){
 					return next(err);
-				} else {
-					res.json(operarios);
+				}else {
+					res.json(admins);
 				}
 			});
 		}	
 	});
 });
 
-router.post('/operario', function(req, res, next){
+router.post('/admin', function(req, res, next){
 	Admin.findOne({ _id: req.session.user._id }, function (err, user) { //Solo Admins logoneados pueden usar este metodo
 		if (!user) {
 			return res.send({error: "usuario no autorizado"});
 		} else {
 			var hash = bcrypt.hashSync(req.body.clave, bcrypt.genSaltSync(10));
 
-			var operario = new Operario({
+			var admin = new Admin({
 				nombre: req.body.nombre,
 				apellido: req.body.apellido,
 				cedula: req.body.cedula,
@@ -38,53 +38,54 @@ router.post('/operario', function(req, res, next){
 				clave: hash
 			});
 
-			operario.save(function(err, usr){
+			admin.save(function(err, admin){
 				if (err) {
 					return next(err);
 				} else {
-					res.json(usr);	
-				}				
+					res.json(admin);
+				}
 			});
 		}	
 	});
+	
 });
 
-router.put('/operario/:id', function(req, res){
+router.put('/admin/:id', function(req, res){
 	Admin.findOne({ _id: req.session.user._id }, function (err, user) { //Solo Admins logoneados pueden usar este metodo
 		if (!user) {
 			return res.send({error: "usuario no autorizado"});
 		} else {
-			Operario.findById(req.params.id, function(err, operario){
-				operario.nombre = req.body.nombre;
-				operario.apellido = req.body.apellido;
-				operario.cedula = req.body.cedula;
-				operario.correo = req.body.correo;
-				operario.clave = req.body.clave;
+			Admin.findById(req.params.id, function(err, user){
+				user.nombre = req.body.nombre;
+				user.apellido = req.body.apellido;
+				user.cedula = req.body.cedula;
+				user.correo = req.body.correo;
+				user.clave = req.body.clave;
 
-				operario.save(function(err){
+				user.save(function(err){
 					if (err) {
 						res.send(err);
 					} else {
-						res.json(operario);	
-					}					
+						res.json(user);
+					}
 				});
 			});
 		}	
 	});
 });
 
-router.delete('/operario/:id', function(req, res){
+router.delete('/admin/:id', function(req, res){
 	Admin.findOne({ _id: req.session.user._id }, function (err, user) { //Solo Admins logoneados pueden usar este metodo
 		if (!user) {
 			return res.send({error: "usuario no autorizado"});
 		} else {
-			Operario.findByIdAndRemove(req.params.id, function(err){
+			Admin.findByIdAndRemove(req.params.id, function(err){
 				if(err){
 					res.send(err);
 				} else {
-					res.json({message: 'El operario se ha eliminado'});	
-				}				
-			})
+					res.json({message: 'El admin se ha eliminado'});
+				}
+			});
 		}	
-	});	
+	});
 });

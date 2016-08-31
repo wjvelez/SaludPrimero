@@ -15,13 +15,21 @@ router.get('/laboratoristas', function(req, res, next){
 });
 
 router.post('/laboratorista', function(req, res, next){
-	var laboratorista = new Laboratorista(req.body);
+	var hash = bcrypt.hashSync(req.body.clave, bcrypt.genSaltSync(10));
 
-	laboratorista.save(function(err, laboratorista){
+	var laboratorista = new Laboratorista({
+		nombre: req.body.nombre,
+		apellido: req.body.apellido,
+		cedula: req.body.cedula,
+		correo: req.body.correo,
+		clave: hash
+	});
+
+	laboratorista.save(function(err, usr){
 		if (err) {
 			return next(err);
 		}
-		res.json(laboratorista);
+		res.json(usr);
 	});
 });
 

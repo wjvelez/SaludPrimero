@@ -5,6 +5,7 @@ var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var mongoose = require('mongoose');
+mongoose.Promise = global.Promise; //esta linea es porque salia un advertencia de monggose
 
 /*
 mongoose.connection.db.listCollections().toArray(function(err, names) {
@@ -38,6 +39,7 @@ require('./models/Muestra');
 require('./models/CentroMedico');
 require('./models/Operario');
 require('./models/Laboratorista');
+require('./models/Admin');
 
 
 
@@ -50,12 +52,42 @@ var muestrasRoutes = require('./routes/muestras');
 var centrosMedRoutes = require('./routes/centrosMed');
 var operariosRoutes = require('./routes/operarios');
 var laboratoristasRoutes = require('./routes/laboratoristas');
+
+var adminsRoutes = require('./routes/admins');
+
 var login = require('./routes/login');
 
 var app = express();
 
 
+var session = require('client-sessions');
 
+
+app.use(session({
+  cookieName: 'session',
+  secret: 'olakeasequeriendoverquehayaquioquehace:v',
+  duration: 30 * 60 * 1000,
+  activeDuration: 5 * 60 * 1000,
+  httpOnly: true,
+  //secure: true,
+  ephemeral: true
+}));
+
+
+app.use(function(req, res, next) {
+  if (req.session && req.session.user) {
+    console.log("tiene una session");
+    next()
+  } else {
+    if (req.url == "/login" || req.url == "/") {
+      console.log("Entrando al sistema");
+      next();
+    } else {
+      console.log("ERROR: inicie session primero");
+      res.render("index.ejs");
+    }
+  }
+});
 
 
 
@@ -78,6 +110,9 @@ app.use('/', muestrasRoutes);
 app.use('/', centrosMedRoutes);
 app.use('/', operariosRoutes);
 app.use('/', laboratoristasRoutes);
+
+app.use('/', adminsRoutes);
+
 app.use('/', login);
 app.use('/users', users);
 
