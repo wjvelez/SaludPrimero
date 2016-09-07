@@ -1,87 +1,45 @@
-angular.module('appMuestras',['ui.router'])
-	.config(function($stateProvider, $urlRouterProvider){
-		$stateProvider
-			.state('muestra',{
-				url: '/muestra',
-				templateUrl: 'views/laboratorista/muestra.html',
-				controller: 'ctrlCargar'
-			})
-			.state('editar',{
-				url: '/editar/{id}',
-				templateUrl: 'views/laboratorista/editar.html',
-				controller: 'ctrlEditar'
-			})
-		$urlRouterProvider.otherwise('muestra');})
-	.factory('comun',function($http){
-		var comun = {}
-        
-		comun.muestras = [];
-		comun.muestra = {};
-
-		/*Seccion de metodos remotos*/
-		comun.getAll = function(){
-			return $http.get('/muestras')
-			.success(function(data){
-				angular.copy(data, comun.muestras);
-				return comun.muestras
-			})
-		};
-
-		/*
-        comun.add = function(muestra){
-			return $http.post('/muestras', muestra)
-			.success(function(muestra){
-				comun.muestras.push(muestra);
-			})
-		}
-
-		comun.update = function(muestra){
-			return $http.put('/muestras/'+ muestra._id, muestra)
-			.success(function(data){
-				var indice = comun.muestras.indexOf(muestra);
-				comun.muestras[indice] = data;
-			})
-		}
+            angular.module('myApp', [])
+                .controller('controller', function($scope, $http) {
+                    
+                    $scope.muestras = {}
+                    $scope.examenes = {}
+                    $scope.resultados = {}
 
 
-		comun.delete = function(muestra){
-			return $http.delete('/muestras/'+ muestra._id)
-			.success(function(){
-				var indice = comun.muestras.indexOf(muestra);
-				comun.muestras.splice(indice, 1);
-			})
-		}
-        */
-		return comun;})
-	.controller('ctrlCargar', function($scope, $state, dataService, comun) {
-        comun.getAll();
-        $scope.muestras = comun.muestras;
+                    $http.get("/muestras")
+                        .then(function (response) {
+                            $scope.muestras = response.data;
+                        }
+                    );
 
-        $scope.cargarExamenes = function(id) {
-        	dataService.setProperty(id);
-        	console.log(dataService.getProperty());
-            $state.go('editar');
-        }})
-	.controller('ctrlEditar',function($scope, $state, $http, dataService){
-        $scope.examenes = {};
-        id = dataService.getProperty();
-        var url =  "/muestra/" + id + "/examenes";
+                    $scope.cargarExamenes = function(id) {
+                        //var id = $event.currentTarget.siblings('.id_muestra');
+                        //console.log(id);
+                        var url =  "/muestra/" + id + "/examenes";
+                        $http.get(url)
+                            .then(function (response) {
+                                $scope.examenes = response.data;
+                            }
+                        );
+                    }
 
-		$http.get(url)
-            .then(function (response) {
-                //console.log(url);
-                //console.log(response.data);
-                $scope.examenes = response.data;
-            }
-        );
+                    $scope.cargarResultados = function(_id) {
 
-        $scope.abrir = function(){
-        	$('#modal1').openModal();
-        };
-        $scope.openAdd = function(){
-        	$('#modal2').openModal();
-        };
-        })
+                        //var resultados = {};
+
+                        $http.get("/examen/" + _id + "/resultados")
+                            .then(function (response) {
+                                //resultados.push( response.data );
+                                $scope.resultados = response.data;
+                            }
+                        );
+                        //return resultados;
+                    }
+
+
+
+
+                });
 
 $(document).ready(function() {
 
