@@ -33,8 +33,7 @@
             <li><a href="#">Examenes</a></li>
           </ul>
           <ul class="nav navbar-nav navbar-right">
-            <li><a href="#"><span class="glyphicon glyphicon-user" aria-hidden="true"></span></a></li>
-            <li><a href="#">Logout</a></li>
+            <li><a href="/logout" class="glyphicon glyphicon-off"></a></li>
           </ul>
         </div><!--/.nav-collapse -->
       </div>
@@ -55,11 +54,11 @@
         </thead>
         <tbody>
             <tr ng-repeat="muestra in muestras">;
-                <!-- <td class="id_muestra" style="display:none;">{{muestra._id}}</td> -->
+                <td class="id_muestra" style="display:none;">{{muestra._id}}</td>
                 <td class="codigo">{{muestra.cod_barras}}</td>
                 <td class="tipo">{{muestra.tipo}}</td>
                 <td class="llego">{{muestra.recibido}}</td>
-                <td class="examenes_muestra" ng-click="cargarExamenes(muestra._id)">mostrar</td>
+                <td class="examenes_muestra" ng-click="cargarExamenes(muestra._id)" >mostrar</td>
             </tr>
         </tbody>
       </table>
@@ -67,53 +66,95 @@
 
 
     <div class="container examenes" ng-repeat="examen in examenes" >
-      <h2 ng-click="cargarResultados(examen._id)">Examenm {{examen.nombre}}</h2>
-      <table id="tablaExamenes" class="table table-bordered table-striped">
+      <h2 >Examen: {{examen.nombre}} </h2>
+      <button type="button" class="btn btn-primary" data-toggle="modal" ng-click="setExamen(examen._id)" >crear resultado</button>
+      <table class="table table-bordered table-striped">
         <thead>
           <tr>
-            <th style="display:none;">id</th>
+            
             <th>parametro</th>
             <th>unidades</th>
             <th>resultado</th>
             <th>valores de referencia</th>
             <th>editar</th>
+            <th>eliminar</th>
           </tr>
         </thead>
         <tbody id = "tabla-body-examenes">
-            <tr ng-repeat="resultado in resultados">
-                <td class="id_examen" style="display:none;">{{resultado._id}}</td>
+            <tr ng-repeat="resultado in examen.resultados">
+                
                 <td class="parametro"> {{resultado.parametro}}</td>
                 <td class="unidades"> {{resultado.unidades}}  </td>
                 <td class="resultado"> {{resultado.resultado}}  </td>
                 <td class="valores_referencia"> {{resultado.valores_referencia}}  </td>
-                <td class= "editar"><button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modalEditarExamen">editar</button></td>
+                <td class= "editar"><button type="button" class="glyphicon glyphicon-edit" data-toggle="modal" ng-click="editar($parent.$index, $index)"></button></td>
+                <td class= "eliminar"><button type="button" class="glyphicon glyphicon-remove-circle" ng-click="delete($parent.$index, $index)"></button></td>
             </tr>
         </tbody>
       </table>
     </div>
 
-    <!-- Modal de editar examen-->
-          <form id="formEditarExamen" >
+    <!-- Modal de editar resultado-->
+    <div>
+        <form >
             <div class="modal-header">
               <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
               <h4 class="modal-title" id="titulo_form"></h4>
             </div>
             <div class="modal-body">
                 <div class="form-group">
-                  <input type="text" class="form-control" id="unidades" name="unidades" placeholder="Unidades" >
+                  <input type="text" class="form-control" name="parametro" ng-model="edita.parametro">
                 </div>
                 <div class="form-group">
-                  <input type="text" class="form-control" id="resultado" name="resultado" placeholder="Resultado">
+                  <input type="text" class="form-control" name="unidades" ng-model="edita.unidades">
                 </div>
                 <div class="form-group">
-                  <input type="text" class="form-control" id="valores_referencia" name="valores_referencia" placeholder="Valores de referencia">
+                  <input type="text" class="form-control" name="resultado" ng-model="edita.resultado">
+                </div>
+                <div class="form-group">
+                  <input type="text" class="form-control" name="valores_referencia" ng-model="edita.valores_referencia">
                 </div>
             </div>
             <div class="modal-footer">
               <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
-              <button type="submit" class="btn btn-primary">Aceptar</button>
+              <button type="submit" class="btn btn-primary" ng-click="put(edita)">Actualizar </button>
             </div>
           </form>
+    </div>
+
+
+
+
+    <!-- Modal de editar resultado-->
+    <div>
+        <form >
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+              <h4 class="modal-title" id="titulo_form"></h4>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                  <input type="text" class="form-control" name="examen" ng-model="examen_id" readonly>
+                </div>
+                <div class="form-group">
+                  <input type="text" class="form-control" name="parametro" ng-model="nuevo_resultado.parametro" placeholder="Parametro">
+                </div>
+                <div class="form-group">
+                  <input type="text" class="form-control" name="unidades" ng-model="nuevo_resultado.unidades" placeholder="Unidades">
+                </div>
+                <div class="form-group">
+                  <input type="text" class="form-control" name="resultado" ng-model="nuevo_resultado.resultado" placeholder="Resultado">
+                </div>
+                <div class="form-group">
+                  <input type="text" class="form-control" name="valores_referencia" ng-model="nuevo_resultado.valores_referencia" placeholder="Valores de referencia">
+                </div>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+              <button type="submit" class="btn btn-primary" ng-disabled="isDisabled" ng-click="agregar()">Crear</button>
+            </div>
+          </form>
+    </div>
 
 
     </footer>
@@ -124,9 +165,12 @@
             angular.module('myApp', [])
                 .controller('cargar-muestras-controller', function($scope, $http) {
                     
-                    $scope.muestras = {}
-                    $scope.examenes = {}
-                    //$scope.resultados = {}
+                    $scope.muestras = {};
+                    $scope.examenes = {};
+                    $scope.edita = {};
+                    $scope.examen_id = "";
+                    $scope.isDisabled = true;
+                    $scope.nuevo_resultado = {};
 
                     $http.get("/muestras")
                         .then(function (response) {
@@ -135,82 +179,85 @@
                     );
 
                     $scope.cargarExamenes = function(id) {
-                        //var id = $event.currentTarget.siblings('.id_muestra');
-                        //console.log(id);
-                        var url =  "/muestra/" + id + "/examenes";
+                        $scope.examenes = {};
 
-                        $http.get(url)
+                        $http.get("/muestra/"+id+"/examenes")
                             .then(function (response) {
-                                //console.log(url);
-                                //console.log(response.data);
-                                $scope.examenes = response.data;
-                            }
-                        );
+
+                                $.each(response.data, function(i, obj) {
+                                    obj["resultados"] = [];
+                                    //var id_examen = obj._id;
+                                    $http.get("/examen/"+obj._id+"/resultados")
+                                        .then(function (response) {
+                                            obj["resultados"]= response.data;
+                                        });
+                                    $scope.examenes = response.data;
+                                });
+                            });
                     }
 
-                    $scope.cargarResultados = function(id) {
+                    $scope.delete = function ( pid, cid ) {
+                        var resultado = $scope.examenes[pid].resultados[cid];
+                        $http.delete("/resultado/"+ resultado._id)
+                            .then(function () {
+                                $scope.examenes[pid].resultados.splice(cid, 1);
+                            });
+                    };
 
-                        var resultados = [];
+                    //Metodo que carga los valores de un resultado al formulario
+                    $scope.editar = function ( pid, cid ) {
 
-                        $http.get("/examen/" + id + "/resultados")
-                            .then(function (response) {
-                                resultados = response.data;
-                                //console.log(resultados);
-                                //console.log(response.data);
-                                //console.log(resultados);
-                                //$scope.resultados = response.data;
-                            }
-                        );
-                        return resultados;
-                    }
+                        var resultado = $scope.examenes[pid].resultados[cid];
 
-                });
-        $(document).ready(function() {
+                        $scope.edita = resultado;
+                        console.log($scope.edita);
+                    };
 
-            $('body').on('click', '.llego', function () {
-                var elemento = $(this);
-                var id_muestra = $(this).siblings('.id_muestra').text();
-                var url = "/muestra/" + id_muestra;
-                var llego = Boolean($(this).siblings('.llego').text());
-                
-                $.ajax({
-                    type:'PATCH',
-                    url: url,
-                    data: {
-                        recibido: !llego
-                     },
-                    success:function(data){
-                    }
-                });
-            });
- 
-            $('body').on('click', '.editar', function () {
-                var elemento = $(this);
-                var id_examen = elemento.siblings('.id_examen').text();
-                $("#titulo_form").text( "Examen de tipo " + elemento.siblings('.parametro').text() );
-                $("input#unidades.form-control").val( elemento.siblings('.unidades').text() );
-                $("input#resultado.form-control").val( elemento.siblings('.resultado').text() );
-                $("input#valores_referencia.form-control").val( elemento.siblings('.valores_referencia').text() );
-                $("#formEditarExamen").submit(function(event){
-                    var formData= $("#formEditarExamen").serialize();
-                    var url = "/examen/" + id_examen + "?flag=resultados";
-                    $.ajax({
-                        type: "PATCH",
-                        url: url,
-                        data: formData,
-                        success:function(data){
-                            elemento.siblings('.unidades').text(data.unidades);
-                            elemento.siblings('.resultado').text(data.resultado);
-                            elemento.siblings('.valores_referencia').text(data.valores_referencia);
-                            
+                    //Metodo que setea el id del examen cuando se va a crear un nuevo resultado
+                    $scope.setExamen = function ( id ) {
+
+                        $scope.examen_id = id;
+                         $scope.isDisabled = false;
+                    };
+
+                    //Metodo que genera el metodo put con los valores del formulario
+                    $scope.put = function ( resultado) {
+                      console.log(resultado);
+                        //var url = 'http://httpbin.org/put';
+                        $http.put("/resultado/" + resultado._id, { 
+                            parametro: $scope.edita.parametro,
+                            resultado: $scope.edita.resultado,
+                            unidades: $scope.edita.unidades,
+                            valores_referencia: $scope.edita.valores_referencia 
                         }
-                    });
-                    //console.log(url);
-                    id_examen = ""
-                    return false;
+                        ).success(function (response) {
+                            var indice = $scope.examenes.indexOf(resultado);
+                            $scope.examenes[indice] = response.data;
+                        }, function (error) {
+                            //console.log('an error occurred', error.data);
+                        });
+
+
+                    };
+
+                    $scope.agregar = function() {
+                        $http.post("/resultado", {
+                            examen: $scope.examen_id, 
+                            parametro: $scope.nuevo_resultado.parametro,
+                            resultado: $scope.nuevo_resultado.resultado,
+                            unidades: $scope.nuevo_resultado.unidades,
+                            valores_referencia: $scope.nuevo_resultado.valores_referencia 
+                        }).success(function(response){
+                            $scope.examenes[response.data.examen].resultados.push(response.data);    
+                        })
+
+                        $scope.nuevo_resultado.parametro = '';
+                        $scope.nuevo_resultado.resultado = '';
+                        $scope.nuevo_resultado.unidades = '';
+                        $scope.nuevo_resultado.valores_referencia = '';
+                    }
+
                 });
-            });   
-        });
     </script>
   </body>
 
