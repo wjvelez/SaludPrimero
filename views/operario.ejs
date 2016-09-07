@@ -28,104 +28,214 @@
       </div>
     </nav>
 
-
-    <div class="container usuarios" > TABLA DE PACIENTES
-      <h2> Pacientes </h2>
-      <table class="table table-bordered table-striped">
-        <thead>
-          <tr>
-            <th>nombre</th>
-            <th>apellido</th>
-            <th>correo</th>
-            <th>cedula</th>
-            <th>direccion</th>
-            <th>telefono</th>
-            <th>foto</th>
-            <th>editar</th>
-            <th>eliminar</th>
-          </tr>
-        </thead>
-        <tbody>
-            <tr ng-repeat="paciente in pacientes">;
-                <td class="nombre">{{paciente.nombre}}</td>
-                <td class="apellido">{{paciente.apellido}}</td>
-                <td class="correo">{{paciente.correo}}</td>
-                <td class="cedula" >{{paciente.cedula}}</td>
-                <td class="direccion">{{paciente.direccion}}</td>
-                <td class="telefono" >{{paciente.telefono}}</td>
-                <td class="foto">{{paciente.foto}}</td>
-                <td class= "editar"><button type="button" class="glyphicon glyphicon-edit" data-toggle="modal" ng-click="editar($index)"></button></td>
-                <td class= "eliminar"><button type="button" class="glyphicon glyphicon-remove-circle" ng-click="delete($index)"></button></td>
+    <div class="container pacientes" >
+      <div> TABLA DE PACIENTES
+        <h2> Pacientes </h2>
+        <table class="table table-bordered table-striped">
+          <thead>
+            <tr>
+              <th>nombre</th>
+              <th>apellido</th>
+              <th>correo</th>
+              <th>cedula</th>
+              <th>direccion</th>
+              <th>telefono</th>
+              <th>foto</th>
+              <th>editar</th>
+              <th>eliminar</th>
             </tr>
-        </tbody>
-      </table>
+          </thead>
+          <tbody>
+              <tr ng-repeat="paciente in pacientes">;
+                  <td class="nombre"> {{ paciente.nombre }} </td>
+                  <td class="apellido"> {{ paciente.apellido }} </td>
+                  <td class="correo"> {{ paciente.correo }} </td>
+                  <td class="cedula" > {{ paciente.cedula }} </td>
+                  <td class="direccion"> {{ paciente.direccion }} </td>
+                  <td class="telefono" > {{ paciente.telefono }} </td>
+                  <td class="foto"> {{ paciente.foto }} </td>
+                  <td class= "editar"><button type="button" class="glyphicon glyphicon-edit" data-toggle="modal" ng-click="editar($index)"></button></td>
+                  <td class= "eliminar"><button type="button" class="glyphicon glyphicon-remove-circle" ng-click="delete($index)"></button></td>
+              </tr>
+          </tbody>
+        </table>
+      </div>
+
+
+      <div> FORMULARIO DE CREAR PACIENTE
+          <form > 
+              <div class="modal-body">
+                  <div class="form-group">
+                    <input type="text" class="form-control" name="nombre" ng-model="nuevo_paciente.nombre" placeholder="Nombre">
+                  </div>
+                  <div class="form-group">
+                    <input type="text" class="form-control" name="apellido" ng-model="nuevo_paciente.apellido" placeholder="Apellido">
+                  </div>
+                  <div class="form-group">
+                    <input type="text" class="form-control" name="cedula" ng-model="nuevo_paciente.cedula" placeholder="Cedula">
+                  </div>
+                  <div class="form-group">
+                    <input type="email" class="form-control" name="correo" ng-model="nuevo_paciente.correo" placeholder="Correo">
+                  </div>
+                  <div class="form-group">
+                    <input type="text" class="form-control" name="direccion" ng-model="nuevo_paciente.direccion" placeholder="Direccion">
+                  </div>
+                  <div class="form-group">
+                    <input type="text" class="form-control" name="telefono" ng-model="nuevo_paciente.telefono" placeholder="Telefono">
+                  </div>
+                  <div class="form-group">
+                    <input type="text" class="form-control" name="foto" ng-model="nuevo_paciente.foto" placeholder="Foto">
+                  </div>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-default">Cancelar</button>
+                <button type="submit" class="btn btn-primary" ng-click="agregar()">Crear</button>
+              </div>
+            </form>
+      </div>
+
+      <div> FORMULARIO DE EDITAR PACIENTE
+          <form > 
+              <div class="modal-body">
+                  <div class="form-group">
+                    <input type="text" class="form-control" name="nombre" ng-model="editar_paciente.nombre" placeholder="Nombre">
+                  </div>
+                  <div class="form-group">
+                    <input type="text" class="form-control" name="apellido" ng-model="editar_paciente.apellido" placeholder="Apellido">
+                  </div>
+                  <div class="form-group">
+                    <input type="text" class="form-control" name="cedula" ng-model="editar_paciente.cedula" placeholder="Cedula">
+                  </div>
+                  <div class="form-group">
+                    <input type="email" class="form-control" name="correo" ng-model="editar_paciente.correo" placeholder="Correo" readonly>
+                  </div>
+                  <div class="form-group">
+                    <input type="text" class="form-control" name="direccion" ng-model="editar_paciente.direccion" placeholder="Direccion">
+                  </div>
+                  <div class="form-group">
+                    <input type="text" class="form-control" name="telefono" ng-model="editar_paciente.telefono" placeholder="Telefono">
+                  </div>
+                  <div class="form-group">
+                    <input type="text" class="form-control" name="foto" ng-model="editar_paciente.foto" placeholder="Foto">
+                  </div>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-default">Cancelar</button>
+                <button type="submit" class="btn btn-primary" ng-disabled="disEditPaciente" ng-click="put()">Editar</button>
+              </div>
+            </form>
+      </div>
+    </div>
+
+    <div class="container muestras" >
+      <div> TABLA DE MUESTRAS
+        <h2> Muestras </h2>
+        <table class="table table-bordered table-striped">
+          <thead>
+            <tr>
+              <th>tipo</th>
+              <th>cod_barras</th>
+              <th>recibido</th>
+              <th>paciente</th>
+              <th>laboratorio</th>
+              <th>centro</th>
+              <th>fecha</th>
+              <th>editar</th>
+              <th>eliminar</th>
+            </tr>
+          </thead>
+          <tbody>
+              <tr ng-repeat="muestra in muestras">;
+                  <td class="tipo"> {{ muestra.tipo }} </td>
+                  <td class="cod_barras"> {{ muestra.cod_barras }} </td>
+                  <td class="recibido"> {{ muestra.recibido }} </td>
+                  <td class="paciente" > {{ muestra.paciente }} </td>
+                  <td class="laboratorio"> {{ muestra.laboratorio }} </td>
+                  <td class="centro" > {{ muestra.centro }} </td>
+                  <td class="fecha"> {{ muestra.fecha }} </td>
+                  <td class= "editMuestra"><button type="button" class="glyphicon glyphicon-edit" data-toggle="modal" ng-click="editMuestra($index)"></button></td>
+                  <td class= "eliminarMuestra"><button type="button" class="glyphicon glyphicon-remove-circle" ng-click="deleteMuestra($index)"></button></td>
+              </tr>
+          </tbody>
+        </table>
+      </div>
+
+
+      <div> FORMULARIO DE CREAR MUESTRAS
+          <form > 
+              <div class="modal-body">
+                  <div class="form-group">
+                    <input type="text" class="form-control" name="tipo" ng-model="nuevo_muestra.tipo" placeholder="tipo">
+                  </div>
+                  <div class="form-group">
+                    <input type="text" class="form-control" name="cod_barras" ng-model="nuevo_muestra.cod_barras" placeholder="cod_barras">
+                  </div>
+
+                  <div class="form-group" >
+                    <select name="paciente" ng-model="nuevo_muestra.paciente">
+                      <option ng-repeat="paciente in pacientes" value="{{paciente._id}}"> {{paciente.nombre}} {{paciente.apellido}}</option>
+                    </select>
+                  </div>
+
+                  <div class="form-group" >
+                    <select name="laboratorio" ng-model="nuevo_muestra.laboratorio">
+                      <option ng-repeat="laboratorio in laboratorios" value="{{laboratorio._id}}"> {{laboratorio.nombre}}</option>
+                    </select>
+                  </div>
+
+                  <div class="form-group" >
+                    <select name="centro" ng-model="nuevo_muestra.centro">
+                      <option ng-repeat="centro in centros" value="{{centro._id}}"> {{centro.nombre}} </option>
+                    </select>
+                  </div>
+
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-default">Cancelar</button>
+                <button type="submit" class="btn btn-primary" ng-click="agregarMuestra()">Crear</button>
+              </div>
+            </form>
+      </div>
+
+      <div> FORMULARIO DE EDITAR MUESTRAS
+          <form > 
+              <div class="modal-body">
+                  <div class="form-group">
+                    <input type="text" class="form-control" name="tipo" ng-model="editar_muestra.tipo" placeholder="tipo">
+                  </div>
+                  <div class="form-group">
+                    <input type="text" class="form-control" name="cod_barras" ng-model="editar_muestra.cod_barras" placeholder="cod_barras">
+                  </div>
+                  
+                  <div class="form-group" >
+                    <select name="paciente" ng-model="editar_muestra.paciente">
+                      <option ng-repeat="paciente in pacientes" value="{{paciente._id}}"> {{paciente.nombre}} {{paciente.apellido}}</option>
+                    </select>
+                  </div>
+
+                  <div class="form-group" >
+                    <select name="laboratorio" ng-model="editar_muestra.laboratorio">
+                      <option ng-repeat="laboratorio in laboratorios" value="{{laboratorio._id}}"> {{laboratorio.nombre}}</option>
+                    </select>
+                  </div>
+
+                  <div class="form-group" >
+                    <select name="centro" ng-model="editar_muestra.centro">
+                      <option ng-repeat="centro in centros" value="{{centro._id}}"> {{centro.nombre}} </option>
+                    </select>
+                  </div>
+
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-default">Cancelar</button>
+                <button type="submit" class="btn btn-primary" ng-disabled="disEditMuestra" ng-click="putMuestra()">Editar</button>
+              </div>
+            </form>
+      </div>
     </div>
 
 
-    <div> FORMULARIO DE CREAR PACIENTE
-        <form > 
-            <div class="modal-body">
-                <div class="form-group">
-                  <input type="text" class="form-control" name="nombre" ng-model="nuevo_paciente.nombre" placeholder="Nombre">
-                </div>
-                <div class="form-group">
-                  <input type="text" class="form-control" name="apellido" ng-model="nuevo_paciente.apellido" placeholder="Apellido">
-                </div>
-                <div class="form-group">
-                  <input type="text" class="form-control" name="cedula" ng-model="nuevo_paciente.cedula" placeholder="Cedula">
-                </div>
-                <div class="form-group">
-                  <input type="email" class="form-control" name="correo" ng-model="nuevo_paciente.correo" placeholder="Correo">
-                </div>
-                <div class="form-group">
-                  <input type="text" class="form-control" name="direccion" ng-model="nuevo_paciente.direccion" placeholder="Direccion">
-                </div>
-                <div class="form-group">
-                  <input type="text" class="form-control" name="telefono" ng-model="nuevo_paciente.telefono" placeholder="Telefono">
-                </div>
-                <div class="form-group">
-                  <input type="text" class="form-control" name="foto" ng-model="nuevo_paciente.foto" placeholder="Foto">
-                </div>
-            </div>
-            <div class="modal-footer">
-              <button type="button" class="btn btn-default">Cancelar</button>
-              <button type="submit" class="btn btn-primary" ng-click="agregar()">Crear</button>
-            </div>
-          </form>
-    </div>
 
-
-    <div> FORMULARIO DE EDITAR PACIENTE
-        <form > 
-            <div class="modal-body">
-                <div class="form-group">
-                  <input type="text" class="form-control" name="nombre" ng-model="editar_paciente.nombre" placeholder="Nombre">
-                </div>
-                <div class="form-group">
-                  <input type="text" class="form-control" name="apellido" ng-model="editar_paciente.apellido" placeholder="Apellido">
-                </div>
-                <div class="form-group">
-                  <input type="text" class="form-control" name="cedula" ng-model="editar_paciente.cedula" placeholder="Cedula">
-                </div>
-                <div class="form-group">
-                  <input type="email" class="form-control" name="correo" ng-model="editar_paciente.correo" placeholder="Correo" readonly>
-                </div>
-                <div class="form-group">
-                  <input type="text" class="form-control" name="direccion" ng-model="editar_paciente.direccion" placeholder="Direccion">
-                </div>
-                <div class="form-group">
-                  <input type="text" class="form-control" name="telefono" ng-model="editar_paciente.telefono" placeholder="Telefono">
-                </div>
-                <div class="form-group">
-                  <input type="text" class="form-control" name="foto" ng-model="editar_paciente.foto" placeholder="Foto">
-                </div>
-            </div>
-            <div class="modal-footer">
-              <button type="button" class="btn btn-default">Cancelar</button>
-              <button type="submit" class="btn btn-primary" ng-disabled="isDisabled" ng-click="put()">Editar</button>
-            </div>
-          </form>
-    </div>
 
 
     </footer>
@@ -137,12 +247,11 @@
                 .controller('controller', function($scope, $http) {
                     
                     $scope.nuevo_paciente = {};
-
                     $scope.pacientes = {};
-
+                    $scope.laboratorios = {};
+                    $scope.centros = {};
                     $scope.editar_paciente = {};
-
-                    $scope.isDisabled = true;
+                    $scope.disEditPaciente = true;
 
                     $http.get("/pacientes")
                         .then(function (response) {
@@ -150,11 +259,24 @@
                         }
                     );
 
+                    $http.get("/laboratorios")
+                        .then(function (response) {
+                            $scope.laboratorios = response.data;
+                        }
+                    );
+
+                    $http.get("/centrosMed")
+                        .then(function (response) {
+                            $scope.centros = response.data;
+                        }
+                    );
+
                     $scope.editar = function ( pid ) {
                         var paciente = $scope.pacientes[pid];
                         $scope.editar_paciente = paciente;
-                        $scope.isDisabled = false;
+                        $scope.disEditPaciente = false;
                     };
+
 
                     $scope.put = function () {
                         $http.put("/paciente/" + $scope.editar_paciente._id, { 
@@ -168,7 +290,7 @@
                         }
                         ).success(function (response) {
                             $scope.editar_paciente = {}; //se resetea la variable editar paciente para que no se siga editando
-                            $scope.isDisabled = true; //se desactiva el formulario de editar para evitar caida del servidor
+                            $scope.disEditPaciente = true; //se desactiva el formulario de editar para evitar caida del servidor
                         }, function (error) {
                         });
                     };
@@ -198,7 +320,72 @@
                             });
                     };
 
-                });
+
+
+
+
+
+
+
+
+
+
+                    $scope.nuevo_muestra = {};
+                    $scope.muestras = {};
+                    $scope.editar_muestra = {};
+                    $scope.disEditMuestra = true;
+
+                    $http.get("/muestras")
+                        .then(function (response) {
+                            $scope.muestras = response.data;
+                        }
+                    );
+
+                    $scope.editMuestra = function ( pid ) {
+                        var muestra = $scope.muestras[pid];
+                        $scope.editar_muestra = muestra;
+                        $scope.disEditMuestra = false;
+                    };
+
+                    $scope.putMuestra = function () {
+                        $http.put("/muestra/" + $scope.editar_muestra._id, { 
+                            tipo: $scope.editar_muestra.tipo,
+                            cod_barras: $scope.editar_muestra.cod_barras,
+                            paciente: $scope.editar_muestra.paciente,
+                            laboratorio: $scope.editar_muestra.laboratorio,
+                            centro: $scope.editar_muestra.centro,
+                        }
+                        ).success(function (response) {
+                            $scope.editar_muestra = {}; //se resetea la variable editar paciente para que no se siga editando
+                            $scope.disEditMuestra = true; //se desactiva el formulario de editar para evitar caida del servidor
+                        }, function (error) {
+                        });
+                    };
+
+                    //Se crea un paciente
+                    $scope.agregarMuestra = function() {
+                        $http.post("/muestra", {
+                            tipo: $scope.nuevo_muestra.tipo,
+                            cod_barras: $scope.nuevo_muestra.cod_barras,
+                            paciente: $scope.nuevo_muestra.paciente,
+                            laboratorio: $scope.nuevo_muestra.laboratorio,
+                            centro: $scope.nuevo_muestra.centro,
+                        }).success(function(response){
+                          $scope.muestras.push(response.data);
+                                
+                        })
+                            $scope.nuevo_muestra = {};
+                    }
+
+                    $scope.deleteMuestra = function ( pid ) {
+                        var muestra = $scope.muestras[pid];
+                        $http.delete("/muestra/"+ muestra._id)
+                            .then(function () {
+                                $scope.muestras.splice(pid, 1);
+                            });
+                    };
+                }
+              );
     </script>
   </body>
 
