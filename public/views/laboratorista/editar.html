@@ -1,0 +1,94 @@
+<div class="container examenes" ng-repeat="examen in examenes">
+  <div class="row center">  
+    <h2 class="col s4">{{examen.nombre}} </h2>
+    <div ng-click="setExamen(examen._id)" class="col s4 right" style="padding-top:30px">
+      <a class="btn-floating btn-large waves-effect waves-light red">
+        <i class="large material-icons">add</i>
+      </a>
+    </div>
+  </div>
+  <table class="table table-bordered table-striped">
+    <thead>
+      <tr>
+        <th>parametro</th>
+        <th>unidades</th>
+        <th>resultado</th>
+        <th>valores de referencia</th>
+        <th>editar</th>
+        <th>delete</th>
+      </tr>
+    </thead>
+    <tbody id = "tabla-body-examenes">
+        <tr ng-repeat="resultado in examen.resultados">
+            <td class="parametro"> {{resultado.parametro}}</td>
+            <td class="unidades"> {{resultado.unidades}}  </td>
+            <td class="resultado"> {{resultado.resultado}}  </td>
+            <td class="valores_referencia"> {{resultado.valores_referencia}}  </td>
+            <td class= "editar"><button type="button" class="glyphicon glyphicon-edit" ng-click="editar($parent.$index, $index)"></button></td>
+            <td class= "eliminar"><button type="button" class="glyphicon glyphicon-remove-circle" ng-click="delete($parent.$index, $index)"></button></td>
+        </tr>
+    </tbody>
+  </table>
+</div>
+
+<hr>
+
+<!-- Modal Structure -->
+<div id="modal1" class="modal bottom-sheet">
+  <div class="modal-content">
+      <!-- Modal de editar resultado-->
+    <div>
+      <form > 
+        <div class="modal-body">
+            <div class="form-group">
+              <input type="text" class="form-control" name="parametro" ng-model="edita.parametro">
+            </div>
+            <div class="form-group">
+              <input type="text" class="form-control" name="unidades" ng-model="edita.unidades">
+            </div>
+            <div class="form-group">
+              <input type="text" class="form-control" name="resultado" ng-model="edita.resultado">
+            </div>
+            <div class="form-group">
+              <input type="text" class="form-control" name="valores_referencia" ng-model="edita.valores_referencia">
+            </div>
+        </div>
+        <div class="modal-footer">
+          <button type="submit" class="btn btn-primary" ng-click="put(edita)">Actualizar </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+
+  <!-- Modal Structure -->
+  <div id="modal2" class="modal modal">
+    <div class="modal-content">
+      <div>
+        <form > 
+            <div class="modal-body">
+                <div class="form-group">
+                  <input type="text" class="form-control" name="examen" ng-model="examen_id" readonly>
+                </div>
+                <div class="form-group">
+                  <input type="text" class="form-control" name="parametro" ng-model="nuevo_resultado.parametro" placeholder="Parametro">
+                </div>
+                <div class="form-group">
+                  <input type="text" class="form-control" name="unidades" ng-model="nuevo_resultado.unidades" placeholder="Unidades">
+                </div>
+                <div class="form-group">
+                  <input type="text" class="form-control" name="resultado" ng-model="nuevo_resultado.resultado" placeholder="Resultado">
+                </div>
+                <div class="form-group">
+                  <input type="text" class="form-control" name="valores_referencia" ng-model="nuevo_resultado.valores_referencia" placeholder="Valores de referencia">
+                </div>
+            </div>
+            <div class="modal-footer">
+              <button type="submit" class="btn btn-primary" ng-disabled="isDisabled" ng-click="agregar()">Crear</button>
+            </div>
+          </form>
+      </div>
+    </div>
+  </div>
+

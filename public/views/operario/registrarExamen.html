@@ -1,0 +1,49 @@
+<h4>Administrador de Examenes</h4>
+<hr>
+<ul ng-click="activarInfo()" class="collapsible" data-collapsible="accordion">
+    <li>
+      <div class="collapsible-header"><i class="material-icons">add</i>Crear Examen</div>
+      <div class="collapsible-body" style="padding-left:20px;padding-right:20px">
+        <form > 
+          <div class="modal-body">
+              <div class="form-group">
+                <input type="text" class="form-control" name="nombre" ng-model="nuevo_examen.nombre" placeholder="nombre">
+              </div>
+
+              <div class="form-group" >
+                <select name="muestra" class="browser-default">
+                  <option ng-repeat="muestra in muestras" ng-click="setMuestra($index)">{{muestra.cod_barras}}</option>
+                </select>
+              </div>
+          </div>
+          <div class="row modal-footer">
+            <button type="button" class="btn btn-default col s4 right">Cancelar</button>
+            <button type="submit" class="btn btn-primary col s4" ng-click="agregarExamen()">Crear</button>
+          </div>
+        </form>
+      </div>
+    </li>
+    <li>
+      <div class="collapsible-header large active"><i class="material-icons">attach_file</i>Examenes</div>
+        <div class="collapsible-body" style="padding-left:20px;padding-right:20px">
+            <table class="table table-bordered table-striped">
+              <thead>
+                <tr>
+                  <th>nombre</th>
+                  <th>paciente</th>
+                  <th>muestra</th>
+                  <th>eliminar</th>
+                </tr>
+              </thead>
+              <tbody>
+                  <tr ng-repeat="examen in examenes">;
+                    <td class="nombre"> {{ examen.nombre }} </td>
+                    <td class="paciente" > {{ examen.paciente }} </td>
+                    <td class="muestra"> {{ examen.muestra }} </td>
+                    <td class= "eliminarExamen"><button type="button" class="glyphicon glyphicon-remove-circle" ng-click="deleteExamen($index)"></button></td>
+                  </tr>
+              </tbody>
+            </table>
+        </div>
+    </li>
+</ul>

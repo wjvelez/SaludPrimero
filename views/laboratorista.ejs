@@ -1,241 +1,46 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-
-    <title>Administrador de examenes</title>
-
-    <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/themes/smoothness/jquery-ui.css">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
-    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs/dt-1.10.12/datatables.min.css"/>
-    <link rel="stylesheet" href="../public/styles/styles2.css">
-    <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
+    <title>Salud Primero - Laboratorista</title>
+    <% include app/scripts %>
+    <script type="text/javascript" src="scripts/laboratorist/lview.js"></script>
   </head>
 
-  <body ng-app="myApp" ng-controller="cargar-muestras-controller">
-    <nav class="navbar navbar-inverse navbar-static-top">
-      <div class="container">
-        <div class="navbar-header">
-          <a class="navbar-brand" ><%= tipo %> <%= nombre %> <%= apellido %> </a>
+  <body ng-app="appMuestras">
+    <div id="errorLogin" class="alert alert-danger collapse" role="alert"></div>
+
+    <header class="container">
+      <% include user/sideLaboratorista %>
+    </header>
+
+    <main>
+        <% include app/header %>
+        <div id="index-banner" class="parallax-container">
+          <div class="section no-pad-bot">
+            <div class="container">
+              <br><br>
+              <h1 class="header center indigo-text text-lighten-2">Administrador de Examenes</h1>
+              <br><br>
+            </div>
+          </div>
+          <div class="parallax"><img src="imagenes/main2.jpg"></div>
         </div>
-        <div id="navbar" class="collapse navbar-collapse">
-          <ul class="nav navbar-nav navbar-right">
-            <li><a href="/logout" class="glyphicon glyphicon-off"></a></li>
-          </ul>
-        </div><!--/.nav-collapse -->
-      </div>
-    </nav>
+        
+        <div class="container">
+          <ui-view></ui-view>
+        </div>
 
+    </main>
 
-    <div class="container usuarios" > TABLA DE MUESTRASSSSSS
-      <h2> Muestras </h2>
-      <table id="tablaUsuarios" class="table table-bordered table-striped">
-        <thead>
-          <tr>
-            <th>codigo</th>
-            <th>tipo</th>
-            <th>llego</th>
-            <th>examenes</th>
-          </tr>
-        </thead>
-        <tbody>
-            <tr ng-repeat="muestra in muestras">;
-                <td class="codigo">{{muestra.cod_barras}}</td>
-                <td class="tipo">{{muestra.tipo}}</td>
-                <td class="llego">{{muestra.recibido}}</td>
-                <td class="examenes_muestra" ng-click="cargarExamenes(muestra._id)" >mostrar</td>
-            </tr>
-        </tbody>
-      </table>
-    </div>
-
-
-    <div class="container examenes" ng-repeat="examen in examenes" > TABLA DE EXAMENES CON SUS RESULTADOSSSSSS
-      <h2 >Examen: {{examen.nombre}} </h2>
-      <button type="button" class="btn btn-primary" data-toggle="modal" ng-click="setExamen(examen._id)" >crear resultado</button>
-      <table class="table table-bordered table-striped">
-        <thead>
-          <tr>
-            <th>parametro</th>
-            <th>unidades</th>
-            <th>resultado</th>
-            <th>valores de referencia</th>
-            <th>editar</th>
-            <th>eliminar</th>
-          </tr>
-        </thead>
-        <tbody id = "tabla-body-examenes">
-            <tr ng-repeat="resultado in examen.resultados">
-                <td class="parametro"> {{resultado.parametro}}</td>
-                <td class="unidades"> {{resultado.unidades}}  </td>
-                <td class="resultado"> {{resultado.resultado}}  </td>
-                <td class="valores_referencia"> {{resultado.valores_referencia}}  </td>
-                <td class= "editar"><button type="button" class="glyphicon glyphicon-edit" data-toggle="modal" ng-click="editar($parent.$index, $index)"></button></td>
-                <td class= "eliminar"><button type="button" class="glyphicon glyphicon-remove-circle" ng-click="delete($parent.$index, $index)"></button></td>
-            </tr>
-        </tbody>
-      </table>
-    </div>
-
-    <!-- Modal de editar resultado-->
-    <div> FORMULARIO DE ACTUALIZAR UN RESULTADO
-        <form > 
-            <div class="modal-body">
-                <div class="form-group">
-                  <input type="text" class="form-control" name="parametro" ng-model="edita.parametro">
-                </div>
-                <div class="form-group">
-                  <input type="text" class="form-control" name="unidades" ng-model="edita.unidades">
-                </div>
-                <div class="form-group">
-                  <input type="text" class="form-control" name="resultado" ng-model="edita.resultado">
-                </div>
-                <div class="form-group">
-                  <input type="text" class="form-control" name="valores_referencia" ng-model="edita.valores_referencia">
-                </div>
-            </div>
-            <div class="modal-footer">
-              <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
-              <button type="submit" class="btn btn-primary" ng-click="put(edita)">Actualizar </button>
-            </div>
-          </form>
-    </div>
-
-
-    <div> FORMULARIO DE CREAR RESULTADO
-        <form > 
-            <div class="modal-body">
-                <div class="form-group">
-                  <input type="text" class="form-control" name="examen" ng-model="examen_id" readonly>
-                </div>
-                <div class="form-group">
-                  <input type="text" class="form-control" name="parametro" ng-model="nuevo_resultado.parametro" placeholder="Parametro">
-                </div>
-                <div class="form-group">
-                  <input type="text" class="form-control" name="unidades" ng-model="nuevo_resultado.unidades" placeholder="Unidades">
-                </div>
-                <div class="form-group">
-                  <input type="text" class="form-control" name="resultado" ng-model="nuevo_resultado.resultado" placeholder="Resultado">
-                </div>
-                <div class="form-group">
-                  <input type="text" class="form-control" name="valores_referencia" ng-model="nuevo_resultado.valores_referencia" placeholder="Valores de referencia">
-                </div>
-            </div>
-            <div class="modal-footer">
-              <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
-              <button type="submit" class="btn btn-primary" ng-disabled="isDisabled" ng-click="agregar()">Crear</button>
-            </div>
-          </form>
-    </div>
-
-
+    <footer class="page-footer indigo">
+        <% include app/footer %>
     </footer>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+
+    <!--  Scripts-->
+    <script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+    <script src="scripts/materialize.js"></script>
+    <script src="scripts/init.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js"></script>
     <script type="text/javascript" src="https://cdn.datatables.net/v/bs/dt-1.10.12/datatables.min.js"></script>
-    <script>
-            angular.module('myApp', [])
-                .controller('cargar-muestras-controller', function($scope, $http) {
-                    
-                    $scope.muestras = {};
-                    $scope.examenes = {};
-                    $scope.edita = {};
-                    $scope.examen_id = "";
-                    $scope.isDisabled = true;
-                    $scope.nuevo_resultado = {};
-
-                    $http.get("/muestras")
-                        .then(function (response) {
-                            $scope.muestras = response.data;
-                        }
-                    );
-
-                    $scope.cargarExamenes = function(id) {
-                        $scope.examenes = {};
-
-                        $http.get("/muestra/"+id+"/examenes")
-                            .then(function (response) {
-
-                                $.each(response.data, function(i, obj) {
-                                    obj["resultados"] = [];
-                                    //var id_examen = obj._id;
-                                    $http.get("/examen/"+obj._id+"/resultados")
-                                        .then(function (response) {
-                                            obj["resultados"]= response.data;
-                                        });
-                                    $scope.examenes = response.data;
-                                });
-                            });
-                    }
-
-                    $scope.delete = function ( pid, cid ) {
-                        var resultado = $scope.examenes[pid].resultados[cid];
-                        $http.delete("/resultado/"+ resultado._id)
-                            .then(function () {
-                                $scope.examenes[pid].resultados.splice(cid, 1);
-                            });
-                    };
-
-                    //Metodo que carga los valores de un resultado al formulario
-                    $scope.editar = function ( pid, cid ) {
-
-                        var resultado = $scope.examenes[pid].resultados[cid];
-
-                        $scope.edita = resultado;
-                        console.log($scope.edita);
-                    };
-
-                    //Metodo que setea el id del examen cuando se va a crear un nuevo resultado
-                    $scope.setExamen = function ( id ) {
-
-                        $scope.examen_id = id;
-                         $scope.isDisabled = false;
-                    };
-
-                    //Metodo que genera el metodo put con los valores del formulario
-                    $scope.put = function ( resultado) {
-                      console.log(resultado);
-                        //var url = 'http://httpbin.org/put';
-                        $http.put("/resultado/" + resultado._id, { 
-                            parametro: $scope.edita.parametro,
-                            resultado: $scope.edita.resultado,
-                            unidades: $scope.edita.unidades,
-                            valores_referencia: $scope.edita.valores_referencia 
-                        }
-                        ).success(function (response) {
-                            var indice = $scope.examenes.indexOf(resultado);
-                            $scope.examenes[indice] = response.data;
-                        }, function (error) {
-                            //console.log('an error occurred', error.data);
-                        });
-
-
-                    };
-
-                    $scope.agregar = function() {
-                        $http.post("/resultado", {
-                            examen: $scope.examen_id, 
-                            parametro: $scope.nuevo_resultado.parametro,
-                            resultado: $scope.nuevo_resultado.resultado,
-                            unidades: $scope.nuevo_resultado.unidades,
-                            valores_referencia: $scope.nuevo_resultado.valores_referencia 
-                        }).success(function(response){
-                            $scope.examenes[response.data.examen].resultados.push(response.data);    
-                        })
-
-                        $scope.nuevo_resultado.parametro = '';
-                        $scope.nuevo_resultado.resultado = '';
-                        $scope.nuevo_resultado.unidades = '';
-                        $scope.nuevo_resultado.valores_referencia = '';
-                    }
-
-                });
-    </script>
   </body>
-
-
-</body>
-
 </html>
